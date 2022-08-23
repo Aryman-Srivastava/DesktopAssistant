@@ -1,5 +1,11 @@
 """
-IMPROVEMENT REQUIRED
+THIS IS A DESKTOP ASSISTANT CALLED FRIDAY.
+
+TO UTILIZE THE BEST OF AN DESKTOP ASSISTANCE BY PROVIDING A SKELETON AT FIRST
+
+**IT IS REQUESTED BY THE USER TO UPDATE THEIR EMAIL LOGIN DETAILS FIRST BY CREATING A TEXT FILE
+login.txt AND CREATING A LIST OF PEOPLE TO WHOM THEY WANT TO MAIL
+
 """
 
 import datetime
@@ -18,6 +24,7 @@ from googlesearch import search
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)
+# TYPE THE PATH OF CHROME OR ANY OTHER PREFERRED BROWSER HERE
 url_browser = "C:/Program Files/Google/Chrome/Application/chrome.exe %s"
 
 
@@ -81,12 +88,11 @@ def sendEmail(to2, content2):
     server.starttls()
     content3 = cred()
     server.login(content3['id'], content3['password'])
-    if to2.split()[-1].lower() == "varun":
-        server.sendmail(content3['id'], "varun20259@iiitd.ac.in", content2)
-    elif to2.split()[-1].lower() == "shiv":
-        server.sendmail(content3['id'], "shiv69onb@gmail.com", content2)
-    elif to2.split()[-1].lower() == "arjun":
-        server.sendmail(content3['id'], "arjun20187@iiitd.ac.in", content2)
+
+    # UPDATE THE LIST OF USERNAME THAT USER WANTS TO SEND EMAILS TO
+    # if to2.split()[-1].lower() == "NAME THAT USER WANTS TO SEND THE MESSAGE TO EXAMPLE FOR VARUN TYPE VARUN":
+    #     server.sendmail(content3['id'], "EMAIL WANT TO SEND THE MAIL TO", content2)
+
     server.close()
 
 
@@ -114,15 +120,24 @@ if __name__ == '__main__':
 
         # OPEN YOUTUBE
         elif "youtube" in query:
-            webbrowser.get(url_browser).open("youtube.com")
+            try:
+                webbrowser.get(url_browser).open("youtube.com")
+            except Exception as e:
+                webbrowser.open("youtube.com")
 
         # OPEN GOOGLE
         elif "google" in query:
-            webbrowser.get(url_browser).open("google.com")
+            try:
+                webbrowser.get(url_browser).open("google.com")
+            except Exception as e:
+                webbrowser.open("google.com")
 
         # OPEN STACKOVERFLOW
         elif "stackoverflow" in query:
-            webbrowser.get(url_browser).open("stackoverflow.com")
+            try:
+                webbrowser.get(url_browser).open("stackoverflow.com")
+            except Exception as e:
+                webbrowser.open("stackoverflow.com")
 
         # PLAY MUSIC USING YOUTUBE
         elif "play" in query:
@@ -135,7 +150,10 @@ if __name__ == '__main__':
             results = json.loads(results)
             url_suffix = results["videos"][0]["url_suffix"]
             url = "https://www.youtube.com/" + url_suffix
-            webbrowser.get(url_browser).open(url)
+            try:
+                webbrowser.get(url_browser).open(url)
+            except Exception as e:
+                webbrowser.open(url)
 
         # TELL TIME
         elif "time" in query:
@@ -166,7 +184,25 @@ if __name__ == '__main__':
                 continue
             query = query.replace("search", "")
             links = search_google(query)
-            webbrowser.get(url_browser).open(str(links[0]))
+            try:
+                webbrowser.get(url_browser).open(str(links[0]))
+            except Exception as e:
+                webbrowser.open(str(links[0]))
+
+        # FINDING FILE IN OS
+        elif 'os' in query.lower():
+            query = query.replace("os ", "")
+            query = query.replace("OS ", "")
+            query = query.replace("Os ", "")
+            query = query.replace("oS ", "")
+            result = []
+            for root, _, files in os.walk("C:"):
+                if query.lower() in files:
+                    result.append(os.path.join(root, query))
+            if result:
+                os.startfile(result[0])
+            else:
+                speak("file not found")
 
         # EXIT
         elif "exit" in query:
