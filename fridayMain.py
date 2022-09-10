@@ -10,6 +10,7 @@ import datetime
 import json
 import os
 import pickle
+import random
 import sys
 from youtube_search import YoutubeSearch
 import speech_recognition as sr
@@ -44,19 +45,6 @@ def speak(audio):
     engine.say(audio)
     engine.runAndWait()
 
-
-def wishMe():
-    hour = int(datetime.datetime.now().hour)
-    if 0 <= hour < 12:
-        speak("Good Morning, Mr. Aryman")
-    elif 12 <= hour < 15:
-        speak("Good Afternoon, Mr. Aryman")
-    else:
-        speak("Good Evening, Mr. Aryman")
-    speak("I AM FRIDAY, HOW CAN I BE OF HELP TO YOU SIR")
-    return None
-
-
 def takeCommand():
     # IT TAKES MICROPHONE AS INPUT AND PRINTS STATEMENT
 
@@ -87,12 +75,40 @@ def sendEmail(to2, content2):
     content3 = cred()
     server.login(content3['id'], content3['password'])
 
-    # UPDATE THE LIST OF USERNAME THAT USER WANTS TO SEND EMAILS TO
-    # if to2.split()[-1].lower() == "NAME THAT USER WANTS TO SEND THE MESSAGE TO EXAMPLE FOR VARUN TYPE VARUN":
-    #     server.sendmail(content3['id'], "EMAIL WANT TO SEND THE MAIL TO", content2)
+    if to2.split()[-1].lower() == "varun":
+        server.sendmail(content3['id'], "varun20259@iiitd.ac.in", content2)
+    elif to2.split()[-1].lower() == "shiv":
+        server.sendmail(content3['id'], "shiv69pnb@gmail.com", content2)
+    elif to2.split()[-1].lower() == "arjun":
+        server.sendmail(content3['id'], "arjun20187@iiitd.ac.in", content2)
+    else:
+        speak("not in list")
 
     server.close()
 
+def greetings(string):
+    statements = ["Hello, Mr. Aryman", "Hi, Mr. Aryman"]
+    statements.append(string)
+    audio = random.choice(statements)
+    statements.pop()
+    return audio
+
+def wishMe():
+
+    
+
+    hour = int(datetime.datetime.now().hour)
+    if 0 <= hour < 12:
+        audio = greetings("Good Morning, Mr. Aryman")
+        speak(audio)
+    elif 12 <= hour < 15:
+        audio = greetings("Good Afternoon, Mr. Aryman")
+        speak(audio)
+    else:
+        audio = greetings("Good Evening, Mr. Aryman")
+        speak(audio)
+    speak("I AM FRIDAY, HOW CAN I BE OF HELP TO YOU SIR")
+    return None
 
 if __name__ == '__main__':
     wishMe()
